@@ -5,33 +5,31 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>Hello, @context.User.Identity.Name!</h1>
+        <MudText Typo="Typo.h3">Hello, @context.User.Identity.Name!</MudText>
     </Authorized>
     <NotAuthorized>
-        <h1>Hello, guest!</h1>
+        <MudText Typo="Typo.h3">Hello, guest!</MudText>
     </NotAuthorized>
 </AuthorizeView>
-
-Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <AuthorizeView>
     <Authorized>
         <br /><br />
-        <button class="btn btn-outline-primary" @onclick="DisplayGreetingAlert">Display Greeting Alert</button>
+        <MudButton OnClick="DisplayGreetingAlert" Variant="Variant.Filled" Color="Color.Info">Display Greeting Alert</MudButton>
     </Authorized>
 </AuthorizeView>
 
-@code {
+@code
+{
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationState { get; set; }
+    private Task<AuthenticationState> autenticationState { get; set; }
 
     private async Task DisplayGreetingAlert()
     {
-        var authState = await authenticationState;
+        var authState = await autenticationState;
         var message = $"Hello {authState.User.Identity.Name}";
-
         await JSRuntime.InvokeVoidAsync("alert", message);
     }
 }
