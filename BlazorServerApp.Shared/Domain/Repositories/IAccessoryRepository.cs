@@ -1,9 +1,7 @@
-﻿using BlazorServerApp.Shared.Domain.Repositories;
-using BlazorServerApp.Shared.Domain.Entities;
+﻿using BlazorServerApp.Shared.Domain.Entities;
 
-namespace BlazorServerApp.Shared.Domain.Repositories
+namespace BlazorServerApp.Shared.Domain.Repositories;
+
+public interface IAccessoryRepository : IEntityRepository<Accessory>
 {
-    public interface IAccessoryRepository : IEntityRepository<Accessory>
-    {
-    }
 }

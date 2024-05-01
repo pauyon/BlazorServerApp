@@ -1,4 +1,4 @@
-﻿namespace BlazorServerApp.Configurations;
+﻿namespace BlazorServerApp.Client.Configurations;
 
 public static class SiteConstants
 {

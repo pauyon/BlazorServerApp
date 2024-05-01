@@ -1,8 +1,7 @@
-﻿namespace BlazorServerApp.Pages.Shared
+﻿namespace BlazorServerApp.Client.Pages.Shared;
+
+public class PageDetails
 {
-    public class PageDetails
-    {
-        public string? TabTitle { get; set; } = string.Empty;
-        public string? PageTitle { get; set; } = string.Empty;
-    }
+    public string? TabTitle { get; set; } = string.Empty;
+    public string? PageTitle { get; set; } = string.Empty;
 }

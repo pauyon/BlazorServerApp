@@ -1,75 +1,74 @@
-﻿using BlazorServerApp.Services;
+﻿using BlazorServerApp.Client.Services;
 using BlazorServerApp.Shared.Domain.Entities.Interfaces;
 using Humanizer;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorServerApp.Pages.Shared
+namespace BlazorServerApp.Client.Pages.Shared;
+
+public class GridPageBase<TEntity> : PageBase
+    where TEntity : class, IEntityBase, new()
 {
-    public class GridPageBase<TEntity> : PageBase
-        where TEntity : class, IEntityBase, new()
+    public string SearchFilter { get; set; } = string.Empty;
+
+    protected List<TEntity>? Entities { get; set; }
+
+    [Inject]
+    protected IService<TEntity>? EntityService { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        public string SearchFilter { get; set; } = string.Empty;
+        PageDetails!.TabTitle = typeof(TEntity).Name.Pluralize();
+        PageDetails!.PageTitle = typeof(TEntity).Name.Pluralize();
+        Entities = await EntityService!.GetAll();
 
-        protected List<TEntity>? Entities { get; set; }
+        IsLoading = Entities != null ? false : true;
+    }
 
-        [Inject]
-        protected IService<TEntity>? EntityService { get; set; }
-
-        protected override async Task OnInitializedAsync()
+    protected virtual void AddEditRecord(TEntity? entity)
+    {
+        if (entity == null)
         {
-            PageDetails!.TabTitle = typeof(TEntity).Name.Pluralize();
-            PageDetails!.PageTitle = typeof(TEntity).Name.Pluralize();
-            Entities = await EntityService!.GetAll();
-
-            IsLoading = Entities != null ? false : true;
+            NavigationManager!.NavigateTo($"/{typeof(TEntity).Name.ToLower()}/0");
+        }
+        else
+        {
+            NavigationManager!.NavigateTo($"/{typeof(TEntity).Name.ToLower()}/{entity.Id}");
         }
 
-        protected virtual void AddEditRecord(TEntity? entity)
+    }
+
+    protected virtual async Task DeleteRecord(TEntity entity)
+    {
+    }
+
+    protected bool RowContainsSearchString(IEnumerable<object?> properties)
+    {
+        if (string.IsNullOrWhiteSpace(SearchFilter))
         {
-            if (entity == null)
+            return true;
+        }
+
+        if (properties == null)
+        {
+            return true;
+        }
+
+        foreach (var property in properties)
+        {
+            if (property == null)
             {
-                NavigationManager!.NavigateTo($"/{typeof(TEntity).Name.ToLower()}/0");
-            }
-            else
-            {
-                NavigationManager!.NavigateTo($"/{typeof(TEntity).Name.ToLower()}/{entity.Id}");
+                continue;
             }
 
-        }
+            var stringValue = property.ToString() ?? string.Empty;
 
-        protected virtual async Task DeleteRecord(TEntity entity)
-        {
-        }
-
-        protected bool RowContainsSearchString(IEnumerable<object?> properties)
-        {
-            if (string.IsNullOrWhiteSpace(SearchFilter))
+            // Check the rest of the values with a contains
+            if (stringValue.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
-
-            if (properties == null)
-            {
-                return true;
-            }
-
-            foreach (var property in properties)
-            {
-                if (property == null)
-                {
-                    continue;
-                }
-
-                var stringValue = property.ToString() ?? string.Empty;
-
-                // Check the rest of the values with a contains
-                if (stringValue.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
+
+        return false;
     }
 }

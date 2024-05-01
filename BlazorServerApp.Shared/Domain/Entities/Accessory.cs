@@ -1,6 +1,5 @@
-﻿namespace BlazorServerApp.Shared.Domain.Entities
+﻿namespace BlazorServerApp.Shared.Domain.Entities;
+
+public class Accessory : EntityBase
 {
-    public class Accessory : EntityBase
-    {
-    }
 }

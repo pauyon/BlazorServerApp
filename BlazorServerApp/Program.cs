@@ -1,4 +1,4 @@
-using BlazorServerApp.Authentication;
+using BlazorServerApp.Client.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor.Services;

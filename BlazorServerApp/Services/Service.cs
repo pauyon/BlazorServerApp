@@ -2,112 +2,111 @@
 using Newtonsoft.Json;
 using System.Text;
 
-namespace BlazorServerApp.Services
+namespace BlazorServerApp.Client.Services;
+
+public abstract class Service<TEntity> : IService<TEntity>
+    where TEntity : class, IEntityBase, new()
 {
-    public abstract class Service<TEntity> : IService<TEntity>
-        where TEntity : class, IEntityBase, new()
+    private readonly HttpClient _httpClient;
+    private readonly string _controller;
+
+    protected Service(HttpClient httpClient, string controller)
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _controller;
+        _httpClient = httpClient;
+        _controller = controller;
+    }
 
-        protected Service(HttpClient httpClient, string controller)
+    public async Task<TEntity> Add(TEntity entity)
+    {
+        var entityJson = new StringContent(System.Text.Json.JsonSerializer.Serialize(entity), Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync($"api/{_controller}", entityJson);
+
+        if (response.IsSuccessStatusCode)
         {
-            _httpClient = httpClient;
-            _controller = controller;
+            var content = await response.Content.ReadAsStringAsync();
+            var item = JsonConvert.DeserializeObject<TEntity>(content);
+
+            return item ?? new TEntity();
         }
 
-        public async Task<TEntity> Add(TEntity entity)
+        return new TEntity();
+    }
+
+    public async Task<bool> Delete(TEntity entity)
+    {
+        var response = await _httpClient.DeleteAsync($"api/{_controller}/{entity.Id}");
+
+        if (response.IsSuccessStatusCode)
         {
-            var entityJson = new StringContent(System.Text.Json.JsonSerializer.Serialize(entity), Encoding.UTF8, "application/json");
+            var content = await response.Content.ReadAsStringAsync();
+            var isDeleted = JsonConvert.DeserializeObject<bool>(content);
 
-            var response = await _httpClient.PostAsync($"api/{_controller}", entityJson);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var item = JsonConvert.DeserializeObject<TEntity>(content);
-
-                return item ?? new TEntity();
-            }
-
-            return new TEntity();
+            return isDeleted;
         }
 
-        public async Task<bool> Delete(TEntity entity)
+        return false;
+    }
+
+    public virtual async Task<List<TEntity>> GetAll()
+    {
+        var response = await _httpClient.GetAsync($"api/{_controller}");
+
+        if (response.IsSuccessStatusCode)
         {
-            var response = await _httpClient.DeleteAsync($"api/{_controller}/{entity.Id}");
+            var content = await response.Content.ReadAsStringAsync();
+            var items = JsonConvert.DeserializeObject<List<TEntity>>(content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var isDeleted = JsonConvert.DeserializeObject<bool>(content);
-
-                return isDeleted;
-            }
-
-            return false;
+            return items ?? new List<TEntity>();
         }
 
-        public virtual async Task<List<TEntity>> GetAll()
+        return new List<TEntity>();
+    }
+
+    public virtual async Task<TEntity?> GetById(int id)
+    {
+        var response = await _httpClient.GetAsync($"api/{_controller}/{id}");
+
+        if (response.IsSuccessStatusCode)
         {
-            var response = await _httpClient.GetAsync($"api/{_controller}");
+            var content = await response.Content.ReadAsStringAsync();
+            var entity = JsonConvert.DeserializeObject<TEntity>(content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var items = JsonConvert.DeserializeObject<List<TEntity>>(content);
-
-                return items ?? new List<TEntity>();
-            }
-
-            return new List<TEntity>();
+            return entity ?? new TEntity();
         }
 
-        public virtual async Task<TEntity?> GetById(int id)
+        return new TEntity();
+    }
+
+    public virtual async Task<IEnumerable<TEntity>?> GetByIdTemporal(int id)
+    {
+        var response = await _httpClient.GetAsync($"api/{_controller}/temporal/{id}");
+
+        if (response.IsSuccessStatusCode)
         {
-            var response = await _httpClient.GetAsync($"api/{_controller}/{id}");
+            var content = await response.Content.ReadAsStringAsync();
+            var entities = JsonConvert.DeserializeObject<IEnumerable<TEntity>>(content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var entity = JsonConvert.DeserializeObject<TEntity>(content);
-
-                return entity ?? new TEntity();
-            }
-
-            return new TEntity();
+            return entities ?? new List<TEntity>();
         }
 
-        public virtual async Task<IEnumerable<TEntity>?> GetByIdTemporal(int id)
+        return new List<TEntity>();
+    }
+
+    public async Task<bool> Update(TEntity entity)
+    {
+        var entityJson = new StringContent(System.Text.Json.JsonSerializer.Serialize(entity), Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PutAsync($"api/{_controller}", entityJson);
+
+        if (response.IsSuccessStatusCode)
         {
-            var response = await _httpClient.GetAsync($"api/{_controller}/temporal/{id}");
+            var content = await response.Content.ReadAsStringAsync();
+            var updated = JsonConvert.DeserializeObject<bool>(content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var entities = JsonConvert.DeserializeObject<IEnumerable<TEntity>>(content);
-
-                return entities ?? new List<TEntity>();
-            }
-
-            return new List<TEntity>();
+            return updated;
         }
 
-        public async Task<bool> Update(TEntity entity)
-        {
-            var entityJson = new StringContent(System.Text.Json.JsonSerializer.Serialize(entity), Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync($"api/{_controller}", entityJson);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var updated = JsonConvert.DeserializeObject<bool>(content);
-
-                return updated;
-            }
-
-            return false;
-        }
+        return false;
     }
 }

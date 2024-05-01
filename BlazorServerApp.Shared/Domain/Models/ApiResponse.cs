@@ -1,12 +1,11 @@
 ﻿using System.Net;
 
-namespace BlazorServerApp.Shared.Domain.Models
+namespace BlazorServerApp.Shared.Domain.Models;
+
+public class ApiResponse
 {
-    public class ApiResponse
-    {
-        public HttpStatusCode StatusCode { get; set; }
-        public bool IsSuccess { get; set; } = true;
-        public List<string> Errors { get; set; }
-        public object Result { get; set; }
-    }
+    public HttpStatusCode StatusCode { get; set; }
+    public bool IsSuccess { get; set; } = true;
+    public List<string> Errors { get; set; }
+    public object Result { get; set; }
 }

@@ -1,8 +1,7 @@
 ﻿using BlazorServerApp.Shared.Domain.Entities;
 
-namespace BlazorServerApp.Shared.Domain.Repositories
+namespace BlazorServerApp.Shared.Domain.Repositories;
+
+public interface ICameraRepository : IEntityRepository<Camera>
 {
-    public interface ICameraRepository : IEntityRepository<Camera>
-    {
-    }
 }

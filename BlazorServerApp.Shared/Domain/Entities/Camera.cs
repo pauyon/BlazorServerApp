@@ -1,7 +1,6 @@
-﻿namespace BlazorServerApp.Shared.Domain.Entities
+﻿namespace BlazorServerApp.Shared.Domain.Entities;
+
+public class Camera : EntityBase
 {
-    public class Camera : EntityBase
-    {
-        public string? Serial { get; set; }
-    }
+    public string? Serial { get; set; }
 }

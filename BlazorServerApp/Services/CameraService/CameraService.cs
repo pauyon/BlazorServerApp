@@ -1,12 +1,11 @@
-﻿using BlazorServerApp.Configurations;
+﻿using BlazorServerApp.Client.Configurations;
 using BlazorServerApp.Shared.Domain.Entities;
 
-namespace BlazorServerApp.Services.CameraService
+namespace BlazorServerApp.Client.Services.CameraService;
+
+public class CameraService : Service<Camera>, ICameraService
 {
-    public class CameraService : Service<Camera>, ICameraService
+    public CameraService(HttpClient httpClient) : base(httpClient, SiteConstants.ApiEndpoints.Camera)
     {
-        public CameraService(HttpClient httpClient) : base(httpClient, SiteConstants.ApiEndpoints.Camera)
-        {
-        }
     }
 }

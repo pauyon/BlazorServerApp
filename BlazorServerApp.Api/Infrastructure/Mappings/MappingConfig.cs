@@ -2,14 +2,13 @@
 using BlazorServerApp.Shared.Domain.Dtos;
 using BlazorServerApp.Shared.Domain.Entities;
 
-namespace BlazorServerApp.Api.Infrastructure.Mappings
+namespace BlazorServerApp.Api.Infrastructure.Mappings;
+
+public class MappingConfig : Profile
 {
-    public class MappingConfig : Profile
+    public MappingConfig()
     {
-        public MappingConfig()
-        {
-            CreateMap<Camera, CameraDto>().ReverseMap();
-            CreateMap<Accessory, AccessoryDto>().ReverseMap();
-        }
+        CreateMap<Camera, CameraDto>().ReverseMap();
+        CreateMap<Accessory, AccessoryDto>().ReverseMap();
     }
 }
