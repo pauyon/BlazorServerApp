@@ -1,0 +1,28 @@
+﻿@page "/camera"
+@page "/camera/{EntityId:int}"
+@inherits DetailsPageBase<Camera>
+
+<DetailsPageTemplate TEntity="Camera" IsLoading="@IsLoading" IsNewRecord=@IsNewRecord PageDetails="@PageDetails" CancelCallback="RedirectToGrid" SaveCallback="Save">
+    <DetailsContent>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Make))" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Model))" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Serial))" @bind-Value="Entity.Serial" For="@(() => Entity.Serial)" />
+            </MudCardContent>
+        </MudCard>
+    </DetailsContent>
+    <HistoryContent>
+        <MudCard>
+            <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Camera).Name)" Items="@EntityHistories" Striped>
+                <Columns>
+                    <PropertyColumn Property="x => x.Make" Title="Make" />
+                    <PropertyColumn Property="x => x.Model" Title="Model" />
+                    <PropertyColumn Property="x => x.Serial" Title="Serial" />
+                    <PropertyColumn Property="x => x.DisplayPeriodStart" Title="Period Start" />
+                    <PropertyColumn Property="x => x.DisplayPeriodEnd" Title="Period End" />
+                </Columns>
+            </MudDataGrid>
+        </MudCard>
+    </HistoryContent>
+</DetailsPageTemplate>

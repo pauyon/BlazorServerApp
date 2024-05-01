@@ -1,0 +1,70 @@
+﻿@typeparam TEntity where TEntity : IEntityBase
+@inherits ComponentBase
+
+<PageTitle>@PageDetails!.TabTitle</PageTitle>
+
+@if (IsLoading)
+{
+    <Loading />
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudText Typo="Typo.h3">@PageDetails!.PageTitle</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                @DetailsContent
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudStack AlignItems="AlignItems.Start" Justify="Justify.FlexEnd" Row>
+                    <MudButton @attributes="UIConstants.ButtonCancel()" @onclick="RedirectToGrid">Cancel</MudButton>
+                    <MudButton @attributes="UIConstants.ButtonSave()" @onclick="@(async () => await Save())">@(IsNewRecord ? "Add" : "Update")</MudButton>
+                </MudStack>
+            </MudItem>
+
+            @if (HistoryContent != null)
+            {
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    <MudText Typo="Typo.h3">History</MudText>
+                    @HistoryContent
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+}
+
+@code {
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public bool IsNewRecord { get; set; }
+
+    [Parameter]
+    public PageDetails? PageDetails { get; set; }
+
+    [Parameter]
+    public RenderFragment? DetailsContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? HistoryContent { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> CancelCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> SaveCallback { get; set; }
+
+    protected async Task RedirectToGrid()
+    {
+        await CancelCallback.InvokeAsync();
+    }
+
+    protected async Task Save()
+    {
+        await SaveCallback.InvokeAsync();
+    }
+}

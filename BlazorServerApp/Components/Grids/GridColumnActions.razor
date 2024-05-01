@@ -1,0 +1,29 @@
+﻿@typeparam TEntity where TEntity : IEntityBase
+
+<TemplateColumn T="TEntity" Title="Actions" Filterable="false" Sortable="false" ShowFilterIcon="false" StickyRight>
+    <CellTemplate>
+        <MudStack Row>
+            <MudButton @attributes="UIConstants.ButtonEdit()" OnClick="@(() => AddEditRecord(context.Item))">Edit</MudButton>
+            <MudButton @attributes="UIConstants.ButtonDelete()" OnClick="@(() => DeleteRecord(context.Item))">Delete</MudButton>
+        </MudStack>
+    </CellTemplate>
+</TemplateColumn>
+
+@code {
+
+    [Parameter]
+    public EventCallback<TEntity> AddEditCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> DeleteCallback { get; set; }
+
+    protected async Task AddEditRecord(TEntity entity)
+    {
+        await AddEditCallback.InvokeAsync(entity);
+    }
+
+    protected async Task DeleteRecord(TEntity entity)
+    {
+        await DeleteCallback.InvokeAsync(entity);
+    }
+}

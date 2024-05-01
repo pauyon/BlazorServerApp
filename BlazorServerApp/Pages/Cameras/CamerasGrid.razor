@@ -1,0 +1,36 @@
+﻿@page "/cameras"
+@inherits GridPageBase<Camera>
+
+<GridPageTemplate TEntity="Camera" IsLoading="@IsLoading" PageDetails="@PageDetails" AddEditCallback="AddEditRecord">
+    <GridContent>
+        <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Camera).Name)" Items="@Entities" QuickFilter="QuickFilter">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField @attributes="UIConstants.FieldSearch()" T="string" @bind-Value="SearchFilter" Class="mt-0" />
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="x => x.Make" Title="Make" />
+                <PropertyColumn Property="x => x.Model" Title="Model" />
+                <PropertyColumn Property="x => x.Serial" Title="Serial" />
+                <GridColumnActions TEntity="Camera" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord" />
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="Camera" />
+            </PagerContent>
+        </MudDataGrid>
+    </GridContent>
+</GridPageTemplate>
+
+@code{
+    private Func<Camera, bool> QuickFilter => x =>
+    {
+        var properties = new List<object?>
+        {
+            x?.Id,
+            x?.Make,
+            x?.Model,
+        };
+
+        return RowContainsSearchString(properties);
+    };
+}

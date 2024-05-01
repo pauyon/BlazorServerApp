@@ -1,16 +1,13 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <AuthorizeView Roles="Administrator,User">
-        <Authorized>
-            <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-        </Authorized>
-    </AuthorizeView>
-    <AuthorizeView Roles="Administrator">
-        <Authorized>
-            <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.DataArray">Fetch data</MudNavLink>
-            <MudNavLink Href="admin" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Admin</MudNavLink>
-        </Authorized>
-    </AuthorizeView>
+    <MudNavLink Href="cameras" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Camera">Cameras</MudNavLink>
+    <MudNavLink Href="accessories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PanTool">Accessories</MudNavLink>
+    @* <AuthorizeView Roles="Administrator">
+    <Authorized>
+    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.DataArray">Fetch data</MudNavLink>
+    <MudNavLink Href="admin" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Admin</MudNavLink>
+    </Authorized>
+    </AuthorizeView> *@
     @* <MudNavGroup Title="Settings" Expanded="true">
     <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Users</MudNavLink>
     <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>

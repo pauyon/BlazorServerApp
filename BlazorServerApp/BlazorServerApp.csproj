@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -8,9 +8,22 @@
 
   <ItemGroup>
     <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.1" />
+    <PackageReference Include="Humanizer" Version="2.14.1" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="MudBlazor" Version="6.19.1" />
     <PackageReference Include="MudBlazor.Markdown" Version="0.1.3" />
     <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.9" />
+    <PackageReference Include="NetCore.AutoRegisterDi" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorServerApp.Shared\BlazorServerApp.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

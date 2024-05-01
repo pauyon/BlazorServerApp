@@ -1,0 +1,24 @@
+﻿@page "/accessory"
+@page "/accessory/{EntityId:int}"
+@inherits DetailsPageBase<Accessory>
+
+<DetailsPageTemplate TEntity="Accessory" IsLoading="@IsLoading" IsNewRecord="@IsNewRecord" PageDetails="@PageDetails" CancelCallback="RedirectToGrid" SaveCallback="Save">
+    <DetailsContent>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Make))" @bind-Value="Entity.Make" For="@(() => Entity.Make)" />
+                <MudTextField @attributes="UIConstants.Field(nameof(Entity.Model))" @bind-Value="Entity.Model" For="@(() => Entity.Model)" />
+            </MudCardContent>
+        </MudCard>
+    </DetailsContent>
+    <HistoryContent>
+        <MudCard>
+            <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Accessory).Name)" Items="@EntityHistories" Striped>
+                <Columns>
+                    <PropertyColumn Property="x => x.Make" Title="Make" />
+                    <PropertyColumn Property="x => x.Model" Title="Model" />
+                </Columns>
+            </MudDataGrid>
+        </MudCard>
+    </HistoryContent>
+</DetailsPageTemplate>

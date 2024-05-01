@@ -1,0 +1,35 @@
+﻿@page "/accessories"
+@inherits GridPageBase<Accessory>
+
+<GridPageTemplate TEntity="Accessory" IsLoading="@IsLoading" PageDetails="@PageDetails" AddEditCallback="AddEditRecord">
+    <GridContent>
+        <MudDataGrid @attributes="UIConstants.DataGrid(typeof(Accessory).Name)" Items="@Entities" QuickFilter="QuickFilter">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField @attributes="UIConstants.FieldSearch()" T="string" @bind-Value="SearchFilter" Class="mt-0" />
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="x => x.Make" Title="Make" />
+                <PropertyColumn Property="x => x.Model" Title="Model" />
+                <GridColumnActions TEntity="Accessory" AddEditCallback="AddEditRecord" DeleteCallback="DeleteRecord"/>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="Accessory" />
+            </PagerContent>
+        </MudDataGrid>
+    </GridContent>
+</GridPageTemplate>
+
+@code {
+    private Func<Accessory, bool> QuickFilter => x =>
+    {
+        var properties = new List<object?>
+        {
+            x?.Id,
+            x?.Make,
+            x?.Model,
+        };
+
+        return RowContainsSearchString(properties);
+    };
+}
