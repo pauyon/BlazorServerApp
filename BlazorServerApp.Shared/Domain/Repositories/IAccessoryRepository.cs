@@ -1,4 +1,4 @@
-﻿using BlazorServerApp.Server.Domain.Repositories;
+﻿using BlazorServerApp.Shared.Domain.Repositories;
 using BlazorServerApp.Shared.Domain.Entities;
 
 namespace BlazorServerApp.Shared.Domain.Repositories

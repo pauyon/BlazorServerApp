@@ -1,6 +1,4 @@
-﻿using BlazorServerApp.Shared.Domain.Repositories;
-
-namespace BlazorServerApp.Server.Domain.Repositories
+﻿namespace BlazorServerApp.Shared.Domain.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {

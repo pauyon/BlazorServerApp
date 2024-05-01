@@ -1,7 +1,7 @@
 ﻿using BlazorServerApp.Shared.Domain.Entities.Interfaces;
 using System.Linq.Expressions;
 
-namespace BlazorServerApp.Server.Domain.Repositories
+namespace BlazorServerApp.Shared.Domain.Repositories
 {
     public interface IEntityRepository<T> 
         where T : class, IEntityBase
